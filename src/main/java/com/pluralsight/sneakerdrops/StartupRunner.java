@@ -37,6 +37,8 @@ public class StartupRunner implements CommandLineRunner {
             System.out.println("2) List sneakers by model");
             System.out.println("3) List sneakers by price");
             System.out.println("4) List sneakers by year");
+            System.out.println("5) List sneakers by price and release year");
+            System.out.println("6) List sneakers by id");
             System.out.println("0) Quit");
             System.out.print("Choose: ");
             switch (scanner.nextInt()) {
@@ -44,9 +46,32 @@ public class StartupRunner implements CommandLineRunner {
                 case 2 -> findByModel(scanner);
                 case 3 -> findByPrice(scanner);
                 case 4 -> findByYear(scanner);
+                case 5 -> search(scanner);
+                case 6 -> viewById(scanner);
                 case 0 -> running = false;
                 default -> System.out.println("Unknown option.");
             }
+        }
+    }
+
+    private void search(Scanner scanner) {
+        System.out.print("Max price: ");
+        double maxPrice = scanner.nextDouble();
+        System.out.println("Released on or after what year: ");
+        int minYear = scanner.nextInt();
+        for (Sneaker s : sneakerRepository.search(maxPrice, minYear)) {
+            System.out.println(s.getModel() + " (" + s.getPrice() + " " + s.getReleaseYear() + ")");
+        }
+    }
+
+    private void viewById(Scanner scanner) {
+        System.out.println("Sneaker id: ");
+        long id = scanner.nextLong();
+        Sneaker s = sneakerRepository.findById(id).orElse(null);
+        if (s == null) {
+            System.out.println("no sneaker found");
+        } else {
+            System.out.println(s.getId() + " " + s.getModel() + " (" + s.getReleaseYear() + ")");
         }
     }
 

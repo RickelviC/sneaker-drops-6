@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 public class DropService {
     public DropService() {
     }
-
     public String getStatus() {
         return "Sneaker drops loading...";
     }
